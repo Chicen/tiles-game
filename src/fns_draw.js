@@ -67,26 +67,32 @@ var draw_iso_path = function(ctx, pa, path_coords) {
 	ctx.stroke();
 }
 
-var draw_iso_box = function (ctx, pa, bottom_coords, l, w, h) {
-	x = bottom_coords[0];
-	y = bottom_coords[1];
-	z = bottom_coords[2];
+var draw_iso_box = function (ctx, pa, nearest, furthest) {
+
+	var x1 = nearest[0];
+	var y1 = nearest[1];
+	var z1 = nearest[2];
+
+	var x2 = furthest[0];
+	var y2 = furthest[1];
+	var z2 = furthest[2];
+
 	draw_iso_path(ctx, pa, [
-		[x    , y    , z    ],
-		[x + l, y    , z    ],
-		[x + l, y + w, z    ],
-		[x    , y + w, z    ],
-		[x    , y    , z    ],
+		[x1, y1, z1],
+		[x2, y1, z1],
+		[x2, y2, z1],
+		[x1, y2, z1],
+		[x1, y1, z1],
 	]);
 	draw_iso_path(ctx, pa, [
-		[x    , y    , z + h],
-		[x + l, y    , z + h],
-		[x + l, y + w, z + h],
-		[x    , y + w, z + h],
-		[x    , y    , z + h],
+		[x1, y1, z2],
+		[x2, y1, z2],
+		[x2, y2, z2],
+		[x1, y2, z2],
+		[x1, y1, z2],
 	]);
-	draw_iso_path(ctx, pa, [[x    , y    , z], [x    , y    , z + h]])
-	draw_iso_path(ctx, pa, [[x + l, y    , z], [x + l, y    , z + h]])
-	draw_iso_path(ctx, pa, [[x + l, y + w, z], [x + l, y + w, z + h]])
-	draw_iso_path(ctx, pa, [[x    , y + w, z], [x    , y + w, z + h]])
+	draw_iso_path(ctx, pa, [[x1, y1, z1], [x1, y1, z2]])
+	draw_iso_path(ctx, pa, [[x2, y1, z1], [x2, y1, z2]])
+	draw_iso_path(ctx, pa, [[x2, y2, z1], [x2, y2, z2]])
+	draw_iso_path(ctx, pa, [[x1, y2, z1], [x1, y2, z2]])
 }
