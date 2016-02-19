@@ -2,22 +2,7 @@
 var canvas = document.getElementById('game');
 var ctx = canvas.getContext('2d');
 
-// game screen stuff
-var gs = {
-	w: canvas.width,
-	h: canvas.height,
-	le: canvas.width/3
-}
-// play area stuff
-var pa = {
-	pl: (gs.w - gs.le) / 7, // padding left
-	pr: (gs.w - gs.le) / 7, // padding right
-	pt: (gs.w - gs.le) / 7, // padding top
-	pb: (gs.w - gs.le) / 7, // padding bottom
-	xn: 4,                  // num of tiles in x dir
-	yn: 4,                  // num of tiles in y dir
-	zn: 10                  // num of tiles in z dir
-}
+var setup = setup_game(canvas, [4, 5, 10], 1/3, 1/7)
 
 var colors = {
 	sidebar: "#00A0B0",
@@ -25,4 +10,16 @@ var colors = {
 	grid:    "#EDC951"
 }
 
-draw_bg(gs, pa, colors)
+draw_bg(ctx, setup, colors)
+
+ctx.strokeStyle = colors.grid
+ctx.setLineDash([1, 3])
+ctx.fillStyle = colors.sidebar
+draw_iso_path(ctx, setup.pa, [[0, 0, 0], [1, 0, 0], [1, 1, 0], [2, 1, 0], [2, 1, 1]])
+
+ctx.strokeStyle = colors.sidebar
+draw_iso_box(ctx, setup.pa, [0, 0, 0], setup.pa.nx, setup.pa.ny, setup.pa.nz)
+
+ctx.strokeStyle = colors.grid
+draw_iso_box(ctx, setup.pa, [0, 3, 0], 1, 2, 3)
+draw_iso_box(ctx, setup.pa, [2, 2, 0], 2, 2, 8)
