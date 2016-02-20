@@ -9,12 +9,13 @@ var setup = setup_game({
 	pa_pad_frac:    1/7
 })
 
+// http://www.colourlovers.com/palette/1473/Ocean_Five
 var colors = {
 	sidebar:      "#00A0B0",
 	bounding_box: "#00A0B0",
 	pabg:         "#6A4A3C",
-	grid:         "#EDC951",
-	tileSide:     "#00A0B0",
+	grid:         "#CC333F",
+	tileSide:     "#EB6841",
 	tileTop:      "#EDC951"
 }
 
@@ -24,15 +25,19 @@ var draw_game = function(ctx, setup, colors, game_state) {
 	ctx.clearRect(setup.pa.l, setup.pa.t, setup.pa.w, setup.pa.h);
 	draw_bg(ctx, setup, colors);
 	draw_tiles(ctx, setup, colors, game_state);
+	draw_cursor_tile(ctx, setup.pa, colors.sidebar, game_state.cursor_tile) 
 }
 
-draw_game(ctx, setup, colors, game_state);
-
 var clickHandler = function(e) {
-	xRand = getRandomInt(0, setup.pa.nx);
-	yRand = getRandomInt(0, setup.pa.ny);
-	(game_state[xRand])[yRand] = (game_state[xRand])[yRand] + 1;
+	game_state.h[game_state.cursor_tile[0]][game_state.cursor_tile[1]] += 1; // put to function
 	draw_game(ctx, setup, colors, game_state);
 }
 
+var mouseMoveHandler = function(setup, game_state) { return function(e) {
+	game_state.cursor_tile = locate_cursor_tile(e.clientX, e.clientY, setup)
+	draw_game(ctx, setup, colors, game_state);
+}}
+
+draw_game(ctx, setup, colors, game_state);
 canvas.addEventListener('click', clickHandler, false);
+canvas.addEventListener('mousemove', mouseMoveHandler(setup, game_state), false);

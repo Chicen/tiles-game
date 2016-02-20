@@ -1,11 +1,11 @@
 
 var to_cart_coords = function(pa, coords) {
-	var x = coords[0];
-	var y = coords[1];
-	var z = coords[2];
+	var i = coords[0];
+	var j = coords[1];
+	var h = coords[2];
 	return [
-		pa.l + ((x - y + pa.ny) * pa.w / (pa.nx + pa.ny)), 															// x
-		pa.b - ((x + y) * pa.w / (pa.nx + pa.ny) * 0.5) - z * (pa.h - pa.w / 2) / pa.nz // y
+		pa.l + ((i - j + pa.ny) * pa.w / (pa.nx + pa.ny)), 															// x
+		pa.b - ((i + j) * pa.w / (pa.nx + pa.ny) * 0.5) - h * (pa.h - pa.w / 2) / pa.nz // y
 	];
 }
 
@@ -108,10 +108,28 @@ var draw_tiles = function(ctx, setup, colors, game_state) {
 	// Needs to be furthest to nearest
 	for (var i = setup.pa.nx; i > 0; i--) {
 		for (var j = setup.pa.ny; j > 0; j--) {
-			draw_tile(ctx, setup.pa, colors, i-1, j-1, game_state[i-1][j-1]);
+			draw_tile(ctx, setup.pa, colors, i-1, j-1, game_state.h[i-1][j-1]);
 		}
 	}
 
+}
+
+var draw_cursor_tile = function(ctx, pa, strokeStyle, cursor_tile) {
+
+	ctx.strokeStyle = strokeStyle;
+	ctx.setLineDash([3, 3]);
+
+	if (!cursor_tile) return;
+	
+	var i = cursor_tile[0]; 
+	var j = cursor_tile[1]; 
+
+	if (i === null || i === undefined || i < 0 || i > setup.pa.nx) return;
+	if (j === null || j === undefined || j < 0 || j > setup.pa.ny) return;
+
+	ctx.strokeStyle = strokeStyle;
+	draw_iso_box_wireframe(ctx, pa, [i, 0, 0], [i + 1, setup.pa.ny, setup.pa.nz])
+	draw_iso_box_wireframe(ctx, pa, [0, j, 0], [setup.pa.nx, j + 1, setup.pa.nz])
 }
 
 var draw_bg = function(ctx, setup, colors) {
