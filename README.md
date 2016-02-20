@@ -17,4 +17,7 @@ TODO:
 * Google analytics
 * Initial parameters from GUI sidebar
 * Rotate view
+*
+* 
+* A LOT OF OTHER STUFF
 
