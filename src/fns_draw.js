@@ -97,8 +97,9 @@ var draw_iso_box_solid = function(ctx, pa, nearest, furthest, strokeStyle, fillS
 	ctx.fill();
 }
 
-var draw_tile = function(ctx, pa, colors, i, j, h) {
-	draw_iso_box_solid(ctx, pa, [i, j, 0], [i + 1, j + 1, h], colors.grid, colors.tileSide, colors.tileTop);
+var draw_tile = function(ctx, pa, colors, i, j, h, tileType) {
+	color = colors.tile.tileType
+	draw_iso_box_solid(ctx, pa, [i, j, 0], [i + 1, j + 1, h], colors.grid, colors.tile[1], colors.tile[tileType]);
 }
 
 var draw_tiles = function(ctx, setup, colors, game_state) {
@@ -108,7 +109,7 @@ var draw_tiles = function(ctx, setup, colors, game_state) {
 	// Needs to be furthest to nearest
 	for (var i = setup.pa.nx; i > 0; i--) {
 		for (var j = setup.pa.ny; j > 0; j--) {
-			draw_tile(ctx, setup.pa, colors, i-1, j-1, game_state.h[i-1][j-1]);
+			draw_tile(ctx, setup.pa, colors, i-1, j-1, game_state.h[i-1][j-1], game_state.c[i-1][j-1]);
 		}
 	}
 
@@ -128,8 +129,8 @@ var draw_cursor_tile = function(ctx, pa, strokeStyle, cursor_tile) {
 	if (j === null || j === undefined || j < 0 || j > setup.pa.ny) return;
 
 	ctx.strokeStyle = strokeStyle;
-	draw_iso_box_wireframe(ctx, pa, [i, 0, 0], [i + 1, setup.pa.ny, setup.pa.nz])
-	draw_iso_box_wireframe(ctx, pa, [0, j, 0], [setup.pa.nx, j + 1, setup.pa.nz])
+	draw_iso_box_wireframe(ctx, pa, [i, j, 0], [i + 1, j + 1, setup.pa.nz])
+	//draw_iso_box_wireframe(ctx, pa, [0, j, 0], [setup.pa.nx, j + 1, setup.pa.nz])
 }
 
 var draw_bg = function(ctx, setup, colors) {

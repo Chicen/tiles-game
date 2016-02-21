@@ -6,7 +6,7 @@ var setup_game = function (init) {
 	var le = init.canvas.width * init.sidebar_frac;
 	
 	var padding = (w - le) * init.pa_pad_frac;
-
+	var currTileType = ''
 	return {
 		w: w,
 		h: h,
@@ -23,7 +23,8 @@ var setup_game = function (init) {
 			nx: init.n_tiles[0], 
 			ny: init.n_tiles[1],
 			nz: init.n_tiles[2]
-		}
+		},
+		currTile: 2
 	};
 }
 
@@ -31,10 +32,13 @@ var init_state = function(setup) {
 	var game_state = {};
 
 	game_state.h = new Array(setup.pa.nx);
+	game_state.c = new Array(setup.pa.nx); //tile color
 	for (var i = 0; i < setup.pa.nx; i++){
 		game_state.h[i] = new Array(setup.pa.ny);
+		game_state.c[i] = new Array(setup.pa.ny);
 		for (var j = 0; j < setup.pa.ny; j++) {
 			game_state.h[i][j] = 0;
+			game_state.c[i][j] = 0;	
 		}
 	}
 	return game_state;
